@@ -52,7 +52,7 @@ class API_T2T:
         max_source_length: int,
         model_batch_size: int,
         keep_score_idx: int,  # Note: will work only if beamsize == 1
-        device: str = "cuda"
+        device: str
     ) -> None:
         self.pretrained_model_name_or_path = pretrained_model_name_or_path
         self.tokenizer = T5Tokenizer.from_pretrained(
@@ -65,7 +65,7 @@ class API_T2T:
 
         self.keep_score_idx = keep_score_idx
 
-        if device == "cuda":
+        if "cuda" in device:
             self.model.cuda()
         self.max_source_length = max_source_length
         self.model_batch_size = model_batch_size
