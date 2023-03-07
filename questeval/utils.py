@@ -66,7 +66,7 @@ class API_T2T:
         self.keep_score_idx = keep_score_idx
 
         if "cuda" in device:
-            self.model.cuda()
+            self.model.to(device)
         self.max_source_length = max_source_length
         self.model_batch_size = model_batch_size
 
