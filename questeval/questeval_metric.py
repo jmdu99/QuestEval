@@ -33,7 +33,8 @@ class QuestEval:
         limit_sent: int = 5,
         reduction_multi_refs: Callable = max,
         no_cuda: bool = False,
-        use_cache: bool = True
+        use_cache: bool = True,
+        device: str = "cuda:2"
     ) -> None:
         """
         Main class for the QuestEval metric
@@ -96,15 +97,7 @@ class QuestEval:
         self.qg_prefix = None
         self.qg_batch_size = qg_batch_size
         self.clf_batch_size = clf_batch_size
-        if torch.cuda.is_available() and not no_cuda:
-            for i in range(torch.cuda.device_count()):
-                allocated_memory = torch.cuda.max_memory_allocated(i)
-                total_memory = torch.cuda.get_device_properties(i).total_memory
-                if allocated_memory < 0.5 * total_memory:
-                    self.device = "cuda:" + str(i)
-                    break
-        else:
-            self.device = "cpu"
+        self.device = device
         self.reduction_multi_refs = reduction_multi_refs
         self.do_consistency = do_consistency
         self.do_weighter = do_weighter
