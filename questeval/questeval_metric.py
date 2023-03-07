@@ -98,7 +98,9 @@ class QuestEval:
         self.clf_batch_size = clf_batch_size
         if torch.cuda.is_available() and not no_cuda:
             for i in range(torch.cuda.device_count()):
-                if torch.cuda.max_memory_allocated(i) == 0:
+                allocated_memory = torch.cuda.max_memory_allocated(i)
+                total_memory = torch.cuda.get_device_properties(i).total_memory
+                if allocated_memory < 0.5 * total_memory:
                     self.device = "cuda:" + str(i)
                     break
         else:
